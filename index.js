@@ -1,6 +1,8 @@
 const moves = ["Rock", "Paper", "Scissors"];
 const human = "human"
 const computer = "computer";
+let humanScore = 0;
+let computerScore = 0;
 
 function getComputerChoice() {
   const index = Math.floor(Math.random() * 3);
@@ -10,7 +12,6 @@ function getComputerChoice() {
 function playRound(playerChoice, computerChoice) {
   // First, format the player's choice so it matches the format of `moves`.
   playerChoice = formatChoice(playerChoice);
-  console.log(`player choice: ${playerChoice}, computer choice: ${computerChoice}`);
   return determineWinner(playerChoice, computerChoice);
 }
 
@@ -59,23 +60,35 @@ function game() {
 }
 
 function updateScores(winner) {
+  let message = "";
+
   if (winner === null) {
-    console.log("Round resulted in a tie. No updates to the scores will be made.");
+    message += "Round resulted in a tie.";
   } else if (winner === human) {
-    console.log("Human wins the round.");
+    message += "Human wins the round.";
     humanScore++;
   } else if (winner === computer) {
-    console.log("Computer wins the round.");
+    message += "Computer wins the round.";
     computerScore++;
   } else {
-    console.log("Something went terribly wrong. No updates to the scores will be made.");
+    message += "Something went terribly wrong.";
   }
+
+  message += `\r\nScores\r\nHuman ${humanScore}, Computer ${computerScore}`;
+  displayRoundResult(message);
 }
 
-// Event listeners
+function displayRoundResult(message) {
+  const roundResult = document.querySelector('#round-result');
+  roundResult.style['white-space'] = 'pre';
+  roundResult.textContent = message;
+}
+
+// Play the round by clicking a move button.
 const btns = document.querySelectorAll('.btn-grp');
 btns.forEach(btn => {
   btn.addEventListener('click', function() {
-    playRound(`${btn.textContent}`, getComputerChoice());
+    winner = playRound(`${btn.textContent}`, getComputerChoice());
+    updateScores(winner);
   });
 });
