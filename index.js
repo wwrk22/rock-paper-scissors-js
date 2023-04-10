@@ -1,6 +1,6 @@
 const moves = ["Rock", "Paper", "Scissors"];
-const human = "human"
-const computer = "computer";
+const human = "Human"
+const computer = "Computer";
 let humanScore = 0;
 let computerScore = 0;
 
@@ -10,7 +10,11 @@ function getComputerChoice() {
 }
 
 function playRound(playerChoice, computerChoice) {
-  // First, format the player's choice so it matches the format of `moves`.
+  // Delete previous set result.
+  const gameOverDiv = document.querySelector('#game-over');
+  gameOverDiv.textContent = "";
+
+  // Format the player's choice so it matches the format of `moves`.
   playerChoice = formatChoice(playerChoice);
   return determineWinner(playerChoice, computerChoice);
 }
@@ -22,7 +26,6 @@ function formatChoice(choice) {
 }
 
 function determineWinner(playerChoice, computerChoice) {
-  console.log(`Human played ${playerChoice} and Computer played ${computerChoice}.`);
   if (playerChoice === computerChoice) return null;
   if (playerChoice === moves[0]) return playRock(computerChoice);
   if (playerChoice === moves[1]) return playPaper(computerChoice);
@@ -75,11 +78,21 @@ function updateScores(winner) {
   }
 
   message += `\r\nScores\r\nHuman ${humanScore}, Computer ${computerScore}`;
+  checkGameOver(winner);
   displayRoundResult(message);
 }
 
+function checkGameOver(winner) {
+  if (humanScore === 5 || computerScore === 5) {
+    humanScore = 0;
+    computerScore = 0;
+    const gameOverDiv = document.querySelector('#game-over');
+    gameOverDiv.textContent = `${winner} wins!`;
+  }
+}
+
 function displayRoundResult(message) {
-  const roundResult = document.querySelector('#round-result');
+  const roundResult = document.querySelector('#round');
   roundResult.style['white-space'] = 'pre';
   roundResult.textContent = message;
 }
@@ -88,7 +101,11 @@ function displayRoundResult(message) {
 const btns = document.querySelectorAll('.btn-grp');
 btns.forEach(btn => {
   btn.addEventListener('click', function() {
-    winner = playRound(`${btn.textContent}`, getComputerChoice());
-    updateScores(winner);
+    playRoundWithUpdate(btn.textContent);
   });
 });
+
+function playRoundWithUpdate(playerMove) {
+  winner = playRound(playerMove, getComputerChoice());
+  updateScores(winner);
+}
