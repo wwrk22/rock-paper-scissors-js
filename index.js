@@ -50,11 +50,9 @@ function game() {
   humanScore = 0;
   computerScore = 0;
 
-  for (let i = 0; i < 5; i++) {
-    const playerChoice = prompt("Make a move. Choices are \"rock\", \"paper\", and \"scissors\".");
-    const winner = playRound(playerChoice, getComputerChoice());
-    updateScores(winner);
-  }
+  const playerChoice = prompt("Make a move. Choices are \"rock\", \"paper\", and \"scissors\".");
+  const winner = playRound(playerChoice, getComputerChoice());
+  updateScores(winner);
 
   console.log(`Final result: Human - ${humanScore}, Computer - ${computerScore}`);
 }
