@@ -10,6 +10,7 @@ function getComputerChoice() {
 function playRound(playerChoice, computerChoice) {
   // First, format the player's choice so it matches the format of `moves`.
   playerChoice = formatChoice(playerChoice);
+  console.log(`player choice: ${playerChoice}, computer choice: ${computerChoice}`);
   return determineWinner(playerChoice, computerChoice);
 }
 
@@ -70,3 +71,11 @@ function updateScores(winner) {
     console.log("Something went terribly wrong. No updates to the scores will be made.");
   }
 }
+
+// Event listeners
+const btns = document.querySelectorAll('.btn-grp');
+btns.forEach(btn => {
+  btn.addEventListener('click', function() {
+    playRound(`${btn.textContent}`, getComputerChoice());
+  });
+});
